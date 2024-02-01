@@ -16,7 +16,7 @@ public final class AppwriteClient: ObservableObject {
     public init() {
         self.client = Client()
             .setEndpoint("https://cloud.appwrite.io/v1")
-            .setProject("65b477970040ded5ac11")
+            .setProject("<PROJECT_ID>")
         
         self.account = Account(client)
     }
