@@ -10,7 +10,8 @@ import SwiftUI
 struct example_authApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            AuthenticationView()
+                .environmentObject(AppwriteClient())
         }
     }
 }
