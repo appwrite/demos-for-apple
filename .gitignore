@@ -1,0 +1,10 @@
+xcuserdata/
+project.xcworkspace/
+xcshareddata/
+*.xcscmblueprint
+DerivedData/
+*.moved-aside
+*.xcuserstate
+*.lock
+*.DS_Store
+
