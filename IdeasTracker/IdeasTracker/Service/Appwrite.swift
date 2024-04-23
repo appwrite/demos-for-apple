@@ -14,11 +14,13 @@ class Appwrite {
     var client: Client
     var account: Account
     var databases: Databases
-    
+    let databaseId = "default"
+    let collectionId = "ideas-tracker"
+
     public init() {
         self.client = Client()
             .setEndpoint("https://cloud.appwrite.io/v1")
-            .setProject("659f400f6aa16c45ad6c")
+            .setProject("<YOUR_API_KEY>")
         
         self.account = Account(client)
         self.databases = Databases(client)
@@ -27,8 +29,8 @@ class Appwrite {
     public func listIdeas() async throws ->
     DocumentList<Idea> {
         return try await self.databases.listDocuments<Idea>(
-            databaseId: "default",
-            collectionId: "ideas-tracker",
+            databaseId: self.databaseId,
+            collectionId: self.collectionId,
             queries: [
                 Query.orderDesc("$createdAt"),
                 Query.limit(10)
@@ -39,16 +41,16 @@ class Appwrite {
     
     public func removeIdea(id: String) async throws {
         _ = try! await self.databases.deleteDocument(
-            databaseId: "default",
-            collectionId: "ideas-tracker",
+            databaseId: self.databaseId,
+            collectionId: self.collectionId,
             documentId: id
         )
     }
     
     public func addIdea(title: String, description: String, userId: String) async throws -> Document<Idea> {
         return try! await self.databases.createDocument<Idea>(
-            databaseId: "default",
-            collectionId: "ideas-tracker",
+            databaseId: self.databaseId,
+            collectionId: self.collectionId,
             documentId: ID.unique(),
             data: [
                 "title": title,

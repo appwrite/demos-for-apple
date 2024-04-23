@@ -27,6 +27,8 @@ class IdeasViewModel: ObservableObject {
     
     public func removeIdea(id: String) async {
         let _ = try! await self.appwriteService.removeIdea(id: id)
+        ideaItems.removeAll { $0.id == id }
+        
     }
     
     @MainActor public func addIdea(title: String, description: String, userId: String) async {

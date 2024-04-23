@@ -48,6 +48,8 @@ struct IdeasView: View {
                                         description: self.description,
                                         userId: self.LoginViewModel.userId
                                     )
+                                    title = ""
+                                    description = ""
                                 }
                             }
                         ).buttonStyle(.borderedProminent)
