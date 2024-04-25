@@ -9,13 +9,11 @@ import SwiftUI
 
 @main
 struct IdeasTrackerApp: App {
-
     var body: some Scene {
         WindowGroup {
             SplashView()
                 .environmentObject(Router())
                 .environmentObject(LoginViewModel())
-                .environmentObject(IdeasViewModel())
         }
     }
 }

@@ -13,16 +13,18 @@ class LoginViewModel: ObservableObject {
     
     init() {
         self.userId = ""
-        self.appwriteService = Appwrite()
+        self.appwriteService = Appwrite.shared
     }
     
-    @MainActor public func checkLoggedIn() async -> Bool {
+    public func checkLoggedIn() async -> Bool {
         let user = try? await self.appwriteService.getUser()
-        self.userId = user?.id ?? "";
+        await MainActor.run {
+            self.userId = user?.id ?? "";
+        }
         return self.userId != ""
     }
     
-    @MainActor public func login(
+    public func login(
         email: String,
         password: String
     ) async {
@@ -30,8 +32,9 @@ class LoginViewModel: ObservableObject {
             email: email,
             password: password
         )
-        self.userId = user?.id ?? ""
-        
+        await MainActor.run {
+            self.userId = user?.id ?? ""
+        }
     }
     
     @MainActor public func register(

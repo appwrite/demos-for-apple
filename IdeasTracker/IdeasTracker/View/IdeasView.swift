@@ -9,11 +9,19 @@ import SwiftUI
 import AppwriteModels
 
 struct IdeasView: View {
-    @EnvironmentObject private var IdeasViewModel: IdeasViewModel
-    @EnvironmentObject private var LoginViewModel: LoginViewModel
-    @State private var title = ""
-    @State private var description = ""
+    @StateObject var ideasViewModel: IdeasViewModel
+    @EnvironmentObject private var loginViewModel: LoginViewModel
+    @State private var title: String = ""
+    @State private var description: String = ""
     @FocusState private var focusedTextField: FormTextField?
+    
+    init() {
+        self.title = ""
+        self.description = ""
+        let ideasViewModel = IdeasViewModel()
+        _ideasViewModel = StateObject(wrappedValue: ideasViewModel)
+
+    }
     
     enum FormTextField {
         case title, description
@@ -43,10 +51,10 @@ struct IdeasView: View {
                             "Add Idea",
                             action: {
                                 Task {
-                                    await self.IdeasViewModel.addIdea(
+                                    await self.ideasViewModel.addIdea(
                                         title: self.title,
                                         description: self.description,
-                                        userId: self.LoginViewModel.userId
+                                        userId: self.loginViewModel.userId
                                     )
                                     title = ""
                                     description = ""
@@ -59,7 +67,7 @@ struct IdeasView: View {
             
             List {
                 Section (header: Text("Ideas")) {
-                    ForEach(self.IdeasViewModel.ideaItems) { item in
+                    ForEach(self.ideasViewModel.ideaItems) { item in
                         HStack (alignment: .center, spacing: 10) {
                             VStack(alignment: .leading) {
                                 Text(item.idea.title)
@@ -74,14 +82,14 @@ struct IdeasView: View {
                                 "Remove",
                                 action: {
                                     Task{
-                                        await self.IdeasViewModel
+                                        await self.ideasViewModel
                                             .removeIdea(
                                                 id: item.id
                                             )
                                     }
                                 }
                             )
-                            .disabled(LoginViewModel.userId != item.idea.userId)
+                            .disabled(loginViewModel.userId != item.idea.userId)
                             .buttonStyle(.borderedProminent)
                         }
                     }
@@ -90,7 +98,7 @@ struct IdeasView: View {
             
         }
         .task {
-            await self.IdeasViewModel.loadIdeas()
+            await self.ideasViewModel.loadIdeas()
         }
     }
 }
@@ -100,7 +108,6 @@ struct IdeasView_Previews: PreviewProvider {
     static var previews: some View {
         IdeasView()
             .environmentObject(LoginViewModel())
-            .environmentObject(IdeasViewModel())
             .environmentObject(Router())
     }
 }

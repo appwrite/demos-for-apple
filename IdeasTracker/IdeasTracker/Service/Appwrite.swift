@@ -10,7 +10,9 @@ import Appwrite
 import AppwriteModels
 import JSONCodable
 
-class Appwrite {
+class Appwrite: ObservableObject {
+    static let shared = Appwrite()
+
     var client: Client
     var account: Account
     var databases: Databases
@@ -39,7 +41,7 @@ class Appwrite {
     }
     
     public func removeIdea(id: String) async throws {
-        _ = try! await self.databases.deleteDocument(
+        _ = try await self.databases.deleteDocument(
             databaseId: self.databaseId,
             collectionId: self.collectionId,
             documentId: id
@@ -47,15 +49,15 @@ class Appwrite {
     }
     
     public func addIdea(title: String, description: String, userId: String) async throws -> Document<Idea> {
-        return try! await self.databases.createDocument<Idea>(
+        return try await self.databases.createDocument<Idea>(
             databaseId: self.databaseId,
             collectionId: self.collectionId,
             documentId: ID.unique(),
-            data: [
-                "title": title,
-                "description": description,
-                "userId": userId
-            ],
+            data: Idea(
+                userId: userId, 
+                title: title,
+                description: description
+            ),
             permissions: [Permission.write(Role.user(userId))],
             nestedType: Idea.self
         )
@@ -69,7 +71,7 @@ class Appwrite {
         email: String,
         password: String
     )  async throws -> User<[String: AnyCodable]> {
-        _ = try! await account.createEmailSession(
+        _ = try await account.createEmailSession(
             email: email,
             password: password
         )

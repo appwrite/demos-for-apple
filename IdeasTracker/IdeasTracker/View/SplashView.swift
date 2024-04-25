@@ -10,8 +10,7 @@ import SwiftUI
 
 struct SplashView: View {
     @EnvironmentObject private var router: Router
-    @EnvironmentObject private var LoginViewModel: LoginViewModel
-    private var appwriteService = Appwrite()
+    @EnvironmentObject private var loginViewModel: LoginViewModel
     
     var body: some View {
         NavigationStack(path: $router.routes) {
@@ -21,7 +20,7 @@ struct SplashView: View {
                     .fontWeight(.bold)
                     .padding()
             }.task {
-                let isLoggedIn = await self.LoginViewModel.checkLoggedIn();
+                let isLoggedIn = await self.loginViewModel.checkLoggedIn();
 
                 if !isLoggedIn {
                     router.pushReplacement(.login)
