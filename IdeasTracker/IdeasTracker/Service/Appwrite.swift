@@ -26,8 +26,7 @@ class Appwrite {
         self.databases = Databases(client)
     }
     
-    public func listIdeas() async throws ->
-    DocumentList<Idea> {
+    public func listIdeas() async throws -> DocumentList<Idea> {
         return try await self.databases.listDocuments<Idea>(
             databaseId: self.databaseId,
             collectionId: self.collectionId,

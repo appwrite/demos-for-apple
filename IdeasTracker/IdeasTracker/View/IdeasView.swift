@@ -23,7 +23,7 @@ struct IdeasView: View {
         VStack (alignment: .leading, spacing: 0) {
             Text("Add Ideas")
                 .font(.title2)
-                .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+                .fontWeight(.bold)
                 .padding(10)
             Form {
                 Section {
