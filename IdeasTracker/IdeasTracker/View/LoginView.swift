@@ -12,6 +12,7 @@ struct LoginView: View {
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var isRegister: Bool = false
+    @State private var error: String = ""
     @FocusState private var focusedTextField: FormTextField?
     @EnvironmentObject private var loginViewModel: LoginViewModel
     @EnvironmentObject private var router: Router
@@ -21,17 +22,31 @@ struct LoginView: View {
     }
     
     private func handleRegister() async {
-        await loginViewModel.register(
-            email: email,
-            password: password
-        )
+        do {
+            try await loginViewModel.register(
+                email: email,
+                password: password
+            )
+        }
+        catch {
+            print(error)
+            self.error=error.localizedDescription
+            // add your error handling here
+        }
     }
     
     private func handleLogin() async {
-        await loginViewModel.login(
-            email: email,
-            password: password)
-        router.pushReplacement(.ideas)
+        do {
+            try await loginViewModel.login(
+                email: email,
+                password: password)
+            router.pushReplacement(.ideas)
+        }
+        catch {
+            print(error)
+            self.error=error.localizedDescription
+            // add your error handling here
+        }
     }
     
     var body: some View {
@@ -48,6 +63,12 @@ struct LoginView: View {
                             .focused($focusedTextField, equals: .password)
                             .onSubmit { focusedTextField = nil }
                             .submitLabel(.continue)
+                        
+                        if (!error.isEmpty){
+                            Text(error)
+                                .font(.footnote)
+                                .foregroundColor(Color.red)
+                        }
                     }
                     
                     Button(action: {
@@ -61,6 +82,7 @@ struct LoginView: View {
                     }, label: {
                         Text(isRegister ? "Register" : "Login")
                     })
+                    
                 }
                 
                 Button(isRegister ? 

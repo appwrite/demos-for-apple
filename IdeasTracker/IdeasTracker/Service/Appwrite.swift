@@ -22,13 +22,14 @@ class Appwrite: ObservableObject {
     public init() {
         self.client = Client()
             .setEndpoint("https://cloud.appwrite.io/v1")
-            .setProject("<YOUR_PROJECT_ID>")
+            .setProject("659f400f6aa16c45ad6c")
         
         self.account = Account(client)
         self.databases = Databases(client)
     }
     
-    public func listIdeas() async throws -> DocumentList<Idea> {
+    public func listIdeas() async throws ->
+    DocumentList<Idea> {
         return try await self.databases.listDocuments<Idea>(
             databaseId: self.databaseId,
             collectionId: self.collectionId,

@@ -27,24 +27,24 @@ class LoginViewModel: ObservableObject {
     public func login(
         email: String,
         password: String
-    ) async {
-        let user = try? await self.appwriteService.login(
+    ) async throws {
+        let user = try await self.appwriteService.login(
             email: email,
             password: password
         )
         await MainActor.run {
-            self.userId = user?.id ?? ""
+            self.userId = user.id
         }
     }
     
     @MainActor public func register(
         email: String,
         password: String
-    ) async {
-        let user = try? await self.appwriteService.register(
+    ) async throws {
+        let user = try await self.appwriteService.register(
             email: email,
             password: password
         )
-        self.userId = user?.id ?? ""
+        self.userId = user.id
     }
 }
