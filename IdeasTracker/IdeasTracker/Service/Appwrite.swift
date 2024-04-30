@@ -22,7 +22,7 @@ class Appwrite: ObservableObject {
     public init() {
         self.client = Client()
             .setEndpoint("https://cloud.appwrite.io/v1")
-            .setProject("659f400f6aa16c45ad6c")
+            .setProject("<YOUR_PROJECT_ID>")
         
         self.account = Account(client)
         self.databases = Databases(client)
